@@ -1,38 +1,20 @@
+let choice = 'FY1'
 
+// Initial Load
 document.addEventListener("DOMContentLoaded", function() {
     // Update Graph on page loading
-    parseJSON(2010).then(graphData => {
+    parseJSON(2010, choice).then(graphData => {
         graphUpdate(myChart, graphData)
     })
     })
 
- document.getElementById("FY1-button").onclick=async ()=>{
-    document.getElementById('grade-btn-dropwdown').innerHTML = "FY1";
-    // Update Graph on button pressed
-    parseJSON(2007, 'FY1').then(graphData => {
+// Doctor Selector Form
+let doctorSelector = document.forms['doctor-grade-form'].grade
+doctorSelector.onchange = function() {
+    choice = this.value
+    parseJSON(2000, choice).then(graphData => {
         graphUpdate(myChart, graphData)
     })
-    
-    
-}
-
-document.getElementById("FY2-button").onclick=async ()=>{
-    document.getElementById('grade-btn-dropwdown').innerHTML = "FY2";
-    // Update Graph on button pressed
-    parseJSON(2007, 'FY2').then(graphData => {
-        graphUpdate(myChart, graphData)
-    })
-    
-    
-}
-document.getElementById("ST1-button").onclick=async ()=>{
-    document.getElementById('grade-btn-dropwdown').innerHTML = "S/CT1";
-    // Update Graph on button pressed
-    parseJSON(2007, 'ST1').then(graphData => {
-        graphUpdate(myChart, graphData)
-    })
-    
-    
 }
     
 async function fetchJSON(name) {
@@ -144,8 +126,6 @@ function graphUpdate(chart, parsedData) {
     index = 0 
     dataOptions = ['rpi', 'cpih', 'jnrDocPay', 'mpPay']
     chart.data.datasets.forEach(dataset => {
-        console.log(dataset)
-        console.log(dataOptions[index])
         dataset.data = parsedData[dataOptions[index]]
         index ++
         

@@ -45,18 +45,24 @@
               <div class="chart-container" style="position: relative; height:0vh; width:0vw"></div>
                 <canvas id="payChart"></canvas>
               </div>
-              <div class="btn-group col-md-2">
-                <button type="button" id="grade-btn-dropwdown" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  Doctor Grade
-                </button>
-                <ul class="dropdown-menu ">
-                  <li><a class="dropdown-item" id="FY1-button">FY1</a></li>
-                  <li><a class="dropdown-item" id="FY2-button">FY2 </a></li>
-                  <li><a class="dropdown-item" id="ST1-button" >S/CT1</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Separated link</a></li>
-                </ul>
-              </div>
+              <div class="col-md-2">
+                <form id="doctor-grade-form">
+                <label>Select Grade</label>
+                <select class="form-select", name="grade">
+                  <option>FY1</option>
+                  <option>FY2</option>
+                  <option value="ST1"> C/ST1</option>
+                  <option value="ST2"> C/ST2</option>
+                  <option value="ST3"> C/ST3</option>
+                  <option>ST4</option>
+                  <option>ST5</option>
+                  <option>ST6</option>
+                  <option>ST7</option>
+                  <option>ST8</option>
+                  <option>Consultant</option>
+                </select>
+              </form>
+              
              </div>
           </div>
         </div>
