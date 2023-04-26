@@ -1,9 +1,12 @@
-let choice = 'FY1'
+import { payNewContract } from "./jsDoctorContract"
+
+let grade = 'FY1'
+
 
 // Initial Load
 document.addEventListener("DOMContentLoaded", function() {
     // Update Graph on page loading
-    parseJSON(2010, choice).then(graphData => {
+    parseJSON(grade).then(graphData => {
         graphUpdate(myChart, graphData)
     })
     })
@@ -11,9 +14,10 @@ document.addEventListener("DOMContentLoaded", function() {
 // Doctor Selector Form
 let doctorSelector = document.forms['doctor-grade-form'].grade
 doctorSelector.onchange = function() {
-    choice = this.value
-    parseJSON(2000, choice).then(graphData => {
+    grade = this.value
+    parseJSON(grade).then(graphData => {
         graphUpdate(myChart, graphData)
+        console.log(payNewContract(graphData.jnrDocPay, 2018, grade, 44, false, 12))
     })
 }
     
@@ -24,7 +28,12 @@ async function fetchJSON(name) {
     return jsonData
     }
 
-async function parseJSON(startingYear, grade) {
+async function parseJSON(grade) {
+    // Adjust doctor pay for hours 
+    function adjustDoctorPayForHours(grade, jsonDataJnrDoctorPay, year) {
+        
+    }
+
     let rpiData = []
     let cpihData = []
     let jnrDocPayData = []
@@ -37,34 +46,32 @@ async function parseJSON(startingYear, grade) {
     let jsonDataMpPay = await fetchJSON('mpPay')
     //RPI
     for (const iterator of jsonDataRpi) {
-        let startingValue = (jsonDataRpi.length) - (2022- startingYear)
-            // let rebased = (100 / jsonDataRpi[startingValue].value) * iterator.value
-            rpiData.push({x: iterator.date, y: iterator.value});
+        let startingValue = jsonDataRpi[0].value
+            let rebased = (100 / startingValue) * iterator.value
+            rpiData.push({x: iterator.date, y: rebased});
         
         
         }
     // CPIH
     for (const iterator of jsonDatacCpih) {
-        let startingValue = (jsonDatacCpih.length) - (2022- startingYear)
-
-            // let rebased = (100 / jsonDatacCpih[startingValue].value) * iterator.value
-            cpihData.push({x: iterator.date, y: iterator.value});
+        let startingValue = jsonDatacCpih[0].value
+            let rebased = (100 / startingValue) * iterator.value
+            cpihData.push({x: iterator.date, y: rebased});
         
         }   
     // Jnr Doc
     for (const iterator of jsonDataJnrDoctorPay) {
-        
-            // let rebased = (100 / jsonDataJnrDoctorPay[0][grade]) * iterator[grade]
-            jnrDocPayData.push({x: String(iterator.Date), y: iterator[grade]});
+            let rebased = (100 / jsonDataJnrDoctorPay[0][grade]) * iterator[grade]
+            jnrDocPayData.push({x: String(iterator.Date), y: rebased});
         
     }
     // MP Pay
     for (const iterator of jsonDataMpPay) {
-        let startingValue = (jsonDataMpPay.length) - (2022- startingYear)
-
-            // let rebased = (100 / jsonDataMpPay[startingValue].pay) * iterator.pay
-            mpPayData.push({x: iterator.date, y: iterator.pay});
-        
+       
+        let startingValue = jsonDataMpPay[0].pay 
+            let rebased = (100 / startingValue) * iterator.pay
+            mpPayData.push({x: iterator.date, y: rebased});
+            console.log(startingValue)
     }
 
     return {
