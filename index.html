@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="styles/style.css" /> 
     <title>Pay Cut Calculator</title>
 </head>
+
 <body id="page-top">
   <!-- Navigation. SideNav on Large. TopNav on small -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="sideNav">
@@ -28,7 +29,7 @@
 </nav>
   
 <!--Page Content-->
-<div c15971d83a0a486a72e0ed06b35acece19f294059.rtfdlass="container-fluid p-0">
+<div class="container-fluid p-0">
   <!-- About-->
   <section class="resume-section" id="graph">
       <div class="resume-section-content">
@@ -41,14 +42,14 @@
           </div>
           <div class="container">
             <div class="row d-flex">
-            <div class='col-md-10'>
+            <div class='col-md-8'>
               <div class="chart-container" style="position: relative; height:0vh; width:0vw"></div>
                 <canvas id="payChart"></canvas>
               </div>
-              <div class="col-md-2">
+              <div class="col-lg-4">
                 <form id="doctor-grade-form">
-                <label>Select Grade</label>
-                <select class="form-select", name="grade">
+                <h3>Grade</h1>
+                <select class="form-select", name="grade", id="grade">
                   <option>FY1</option>
                   <option>FY2</option>
                   <option value="ST1"> C/ST1</option>
@@ -59,8 +60,48 @@
                   <option>ST6</option>
                   <option>ST7</option>
                   <option>ST8</option>
-                  <option>Consultant</option>
+
                 </select>
+                <h3 class="mt-4">Hours Worked</h1>
+                <div class="input-group mb-3">
+                  <input id="hours-worked" type="number" class="form-control" placeholder="Average Weekly Hours" aria-label="Average Weekly Hours" aria-describedby="inputGroup-sizing" value="44">
+                  <span class="input-group-text">Average Weekly Hours</span>
+                </div>
+                <h3 class="mt-4">Antisocial Hours</h1>
+                <div class="input-group mb-3">
+                  <input id="antisocial-hours-worked-2016" type="number" class="form-control" aria-label="Hours Worked Outside 07:00 - 21:00" value="12" aria-describedby="inputGroup-sizing-sm">
+                  <span class="input-group-text">07:00 - 21:00</span>
+                </div>
+                <div class="input-group mb-3">
+                  <input id="antisocial-hours-worked-2002" type="number" class="form-control" aria-label="Hours Worked Outside M-F 07:00 - 19:00" value="16" aria-describedby="inputGroup-sizing-sm">
+                  <span class="input-group-text">M-F 07:00 - 19:00</span>
+                </div>
+                <label class="form-check-label" for="weekends-worked">Weekends Worked</label>
+                <select class="form-select", name="weekends-worked", id="weekends-worked">
+                  <option>&lt;1:8 </option>
+                  <option>&lt;1:7 - 1:8</option>
+                  <option>&lt;1:6 - 1:7</option>
+                  <option>&lt;1:5 - 1:6</option>
+                  <option>&lt;1:4 - 1:5</option>
+                  <option>&lt;1:3 - 1:4</option>
+                  <option>&lt;1:2 - 1:3</option>
+                  <option>1:2</option>
+                </select>
+                <div class="form-check m-1 pt-2">
+                  <input class="form-check-input" type="checkbox" value="" id="nroc">
+                  <label class="form-check-label" for="nroc">NROC Supplement</label>
+                </div>
+                <label class="form-check-label pt-2" for="manual-banding">2002 Contract Banding</label>
+                <div class="input-group">
+                  <select class="form-select", name="manual-banding", id="manual-banding">
+                    <option>Automatic</option>
+                    <option>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                    <option>Unbanded</option>
+                  </select>
+                </div>
+                <button type="button" class="btn btn-primary mt-2" id="submit-button">Submit</button>
               </form>
               
              </div>
@@ -74,6 +115,7 @@
 <!--Scripts-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="./jsDoctorContract.js" type="module"></script>
 <script src="jsScript.js" type="module"></script>
 </body>
 </html>

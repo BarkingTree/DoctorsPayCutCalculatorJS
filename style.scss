@@ -12,7 +12,7 @@ $outline-color_1: #d48a6e;
 	.navbar-nav {
 		.nav-item {
 			.nav-link {
-				font-weight: 800;
+				font-weight: 100;
 				letter-spacing: 0.05rem;
 				text-transform: lowercase;
 			}
@@ -27,6 +27,11 @@ $outline-color_1: #d48a6e;
 
 #payChart {
 	width: auto;
+}
+
+.form-label {
+	text-align: center;
+	display: block;
 }
 
 .btn-group {
@@ -46,7 +51,7 @@ section.resume-section {
 	
 	padding-left: 1rem;
 	padding-right: 1rem;
-	padding-top: 2rem;
+	padding-top: 1rem;
 	padding-bottom: 2rem;
 
     .resume-section-title {
@@ -213,12 +218,12 @@ body {
 	}
 	body {
 		padding-top: 0;
-		padding-left: 12rem;
+		padding-left: 9rem;
 	}
 	section.resume-section {
 		padding-left: 3rem;
 		padding-right: 3rem;
-		padding-top: 5rem;
+		padding-top: 2rem;
 		padding-bottom: 5rem;
 	}
 
