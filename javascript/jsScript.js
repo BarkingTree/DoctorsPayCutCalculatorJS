@@ -1,6 +1,10 @@
 import { PayPerYear } from "./jsDoctorContract.js"
 
 let grade = 'FY1'
+document.getElementById('grade').addEventListener("change", function() {
+    grade = document.getElementById('grade').value
+    doctorFormSubmit()
+})
 
 
 // On Initial Load Perform 
@@ -62,13 +66,14 @@ async function generateGraphData(grade, doctorSelector, hoursWorked, nrocStatus,
     let cpihData = []
     let jnrDocPayData = []
     let mpPayData = []
-    let jnrDocPayDataInflation = []
+    let jnrDocAvgPayData = []
     let averagePayData = []
 
 
     let jsonDataRpi = await fetchJSONURL("https://api.ons.gov.uk/timeseries/chaw/dataset/mm23/data")
     let jsonDatacCpih = await fetchJSONURL("https://api.ons.gov.uk/timeseries/L522/dataset/mm23/data")
     let jsonDataJnrDoctorPay = await fetchJSON('englandDoctorPay')
+    let jsonDataJnrAvgDoctorPay = await fetchJSON('englandDoctorAveragePay')
     let jsonDataMpPay = await fetchJSON('mpPay')
     let jsonDataAveragePay = await fetchJSON('avgWeeklyEarnings')
 
@@ -76,12 +81,12 @@ async function generateGraphData(grade, doctorSelector, hoursWorked, nrocStatus,
 
     //RPI
     let rpiYears = jsonDataRpi['years']
-    let indexAdjustmentRPI = 21
+    let indexAdjustmentRPI = 23
 
     for (const iterator of rpiYears) {
             let startingValue = rpiYears[indexAdjustmentRPI].value
             let rebased = (100 / startingValue) * iterator.value
-            if (iterator.date > 2007) {
+            if (iterator.date > 2009) {
                 rpiData.push({x: iterator.date, y: rebased});
             }
         
@@ -89,34 +94,42 @@ async function generateGraphData(grade, doctorSelector, hoursWorked, nrocStatus,
 
     // CPIH
     let cpihYears = jsonDatacCpih['years']
-    let indexAdjustmentCPIH = 20
+    let indexAdjustmentCPIH = 22
     for (const iterator of cpihYears) {
             let startingValue = cpihYears[indexAdjustmentCPIH].value
             let rebased = (100 / startingValue) * iterator.value
-            if (iterator.date > 2007) {
+            if (iterator.date > 2009) {
             cpihData.push({x: iterator.date, y: rebased});
             }
         }   
     // Jnr Doc
     for (const iterator of adjustedPay) {
             let rebased = (100 / adjustedPay[0].Pay[0].totalPay) * iterator.Pay[0].totalPay
-            jnrDocPayData.push({x: String(iterator.Date), y: rebased});
+            jnrDocPayData.push({x: String(iterator.Date), y: iterator.Pay[0].totalPay});
         
     }
+    // Jnr Doc Average Earnings 
+    let jnrDocAvgYears = jsonDataJnrAvgDoctorPay[grade]
+    console.log(jnrDocAvgYears['2010'])
+    for (const iterator of Object.keys(jnrDocAvgYears)) {
+    let rebased = (100 / parseInt(jnrDocAvgYears['2010'])) * jnrDocAvgYears[iterator]
+
+    jnrDocAvgPayData.push({x: iterator, y: rebased})
+    }
+
     // MP Pay
     for (const iterator of jsonDataMpPay) {
             let startingValue = jsonDataMpPay[0].pay 
             let rebased = (100 / startingValue) * iterator.pay
             mpPayData.push({x: iterator.date, y: rebased});
     }
-    
 
     // Average Weekly Earnings
     for (const iterator of jsonDataAveragePay) {
         let adjusted = iterator.pay * 52.1429
         let startingValue = jsonDataAveragePay[0].pay * 52.1429
         let rebased = (100 / startingValue) * adjusted
-        averagePayData.push({x: iterator.date, y: Math.round(rebased)});
+        averagePayData.push({x: iterator.date, y: rebased});
     }
 
     return {
@@ -124,7 +137,8 @@ async function generateGraphData(grade, doctorSelector, hoursWorked, nrocStatus,
         'cpih': cpihData,
         'jnrDocPay': jnrDocPayData,
         'mpPay' : mpPayData,
-        'avgYearlyEarnings': averagePayData
+        'avgYearlyEarnings': averagePayData,
+        'jnrDocAvgPay': jnrDocAvgPayData
     }
 }
 
@@ -163,6 +177,12 @@ const data = {
     },
     {
         label: 'Average Yearly Earnings',
+        backgroundColor: 'rgb(252, 202, 3)',
+        borderColor: 'rgb(252, 202, 3)',
+        data: [],
+    },
+    {
+        label: 'Jnr Doc Average Pay',
         backgroundColor: '42f545',
         borderColor: '42f545',
         data: [],
@@ -187,12 +207,12 @@ const myChart = new Chart(
 
 // Update Chart Function
 function graphUpdate(chart, parsedData) {
+   console.log(parsedData.jnrDocAvgPay)
     let index = 0 
-    let dataOptions = ['rpi', 'cpih', 'jnrDocPay', 'mpPay', 'avgYearlyEarnings']
+    let dataOptions = ['rpi', 'cpih', 'jnrDocPay', 'mpPay', 'avgYearlyEarnings', 'jnrDocAvgPay']
     chart.data.datasets.forEach(dataset => {
         dataset.data = parsedData[dataOptions[index]]
-        index ++
-        console.log(parsedData[dataOptions[index]])
+        index ++    
         
     });
     chart.options.maintainAspectRatio = false;
