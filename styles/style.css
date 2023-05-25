@@ -290,4 +290,8 @@ body {
   .container {
     max-width: 1320px;
   }
+}
+input:invalid {
+  border: 2px dashed red;
+  border-radius: 5;
 }/*# sourceMappingURL=style.css.map */

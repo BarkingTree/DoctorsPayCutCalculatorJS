@@ -1,30 +1,16 @@
 import { PayPerYear } from "./jsDoctorContract.js"
 
-let grade = 'FY1'
-
 
 // On Initial Load Perform 
 document.addEventListener("DOMContentLoaded", function() {
-    // Update Graph on page loading
-    generateGraphData(grade).then(graphData => {
-        graphUpdate(myChart, graphData)
-    })
-    })
-
-
-document.getElementById("submit-button").addEventListener("click", doctorFormSubmit)
-// doctorSelector.onchange = function() {
     
-//     grade = this.value
-//     generateGraphData(grade).then(graphData => {
-//         graphUpdate(myChart, graphData)
-//     })
-//     fetchJSON('englandDoctorPay').then(jsonData => {
-//         let pay = PayPerYear(jsonData, grade, hoursWorked, false, antisocialHours2016, antisocialHours2002, "1:2")
-//     })
-// }
+    })
+
+// On Doctor Form Submit
+document.getElementById("submit-button").addEventListener("click", doctorFormSubmit)
 
 function doctorFormSubmit() {
+
     // Interactive Page Elements
 let doctorSelector = document.getElementById('grade').value
 let hoursWorked = document.getElementById('hours-worked').value
@@ -33,44 +19,41 @@ let antisocialHours2002 = document.getElementById('antisocial-hours-worked-2002'
 let weekendsWorked = document.getElementById('weekends-worked').value
 let nrocPay = document.getElementById('nroc')
 let banding = document.getElementById('manual-banding').value
-
+let year = document.getElementById('year').value
     let nrocStatus = false
     if (nrocPay.checked == true) {
         nrocStatus = true
     }
 
-    generateGraphData(grade, doctorSelector, hoursWorked, nrocStatus, antisocialHours2016, antisocialHours2002, weekendsWorked, banding).then(graphData => {
-        graphUpdate(myChart, graphData)
+    CreatePayData(doctorSelector, hoursWorked, nrocStatus, antisocialHours2016, antisocialHours2002, weekendsWorked, banding).then(data => {
+        UpdatePayTable(data, year)
     })
 }
 
     
-async function fetchJSON(name) {
+async function FetchJSON(name) {
     let url = `../assets/data/${name}.json`;
     const response = await fetch(url)
     const jsonData = await response.json()
     return jsonData
 }
-async function fetchJSONURL(url) {
+async function FetchJSONURL(url) {
     const response = await fetch(url)
     const jsonData = await response.json()
     return jsonData
 }
-async function generateGraphData(grade, doctorSelector, hoursWorked, nrocStatus, antisocialHours2016, antisocialHours2002, weekendsWorked, banding) {
-
+async function CreatePayData(doctorSelector, hoursWorked, nrocStatus, antisocialHours2016, antisocialHours2002, weekendsWorked, banding) {
+    console.log(doctorSelector)
     let rpiData = []
     let cpihData = []
     let jnrDocPayData = []
     let mpPayData = []
     let jnrDocPayDataInflation = []
-    let averagePayData = []
 
-
-    let jsonDataRpi = await fetchJSONURL("https://api.ons.gov.uk/timeseries/chaw/dataset/mm23/data")
-    let jsonDatacCpih = await fetchJSONURL("https://api.ons.gov.uk/timeseries/L522/dataset/mm23/data")
-    let jsonDataJnrDoctorPay = await fetchJSON('englandDoctorPay')
-    let jsonDataMpPay = await fetchJSON('mpPay')
-    let jsonDataAveragePay = await fetchJSON('avgWeeklyEarnings')
+    let jsonDataRpi = await FetchJSONURL("https://api.ons.gov.uk/timeseries/chaw/dataset/mm23/data")
+    let jsonDatacCpih = await FetchJSONURL("https://api.ons.gov.uk/timeseries/L522/dataset/mm23/data")
+    let jsonDataJnrDoctorPay = await FetchJSON('englandDoctorPay')
+    let jsonDataMpPay = await FetchJSON('mpPay')
 
     let adjustedPay = PayPerYear(jsonDataJnrDoctorPay, doctorSelector, hoursWorked, nrocStatus, antisocialHours2016, antisocialHours2002, weekendsWorked, banding)
 
@@ -79,127 +62,59 @@ async function generateGraphData(grade, doctorSelector, hoursWorked, nrocStatus,
     let indexAdjustmentRPI = 21
 
     for (const iterator of rpiYears) {
-            let startingValue = rpiYears[indexAdjustmentRPI].value
-            let rebased = (100 / startingValue) * iterator.value
             if (iterator.date > 2007) {
-                rpiData.push({x: iterator.date, y: rebased});
+                rpiData.push({Date: iterator.date, Value: iterator.value});
             }
-        
         }
 
     // CPIH
     let cpihYears = jsonDatacCpih['years']
     let indexAdjustmentCPIH = 20
     for (const iterator of cpihYears) {
-            let startingValue = cpihYears[indexAdjustmentCPIH].value
-            let rebased = (100 / startingValue) * iterator.value
             if (iterator.date > 2007) {
-            cpihData.push({x: iterator.date, y: rebased});
+            cpihData.push({Date: iterator.date, Value: iterator.value});
             }
         }   
+
     // Jnr Doc
-    for (const iterator of adjustedPay) {
-            let rebased = (100 / adjustedPay[0].Pay[0].totalPay) * iterator.Pay[0].totalPay
-            jnrDocPayData.push({x: String(iterator.Date), y: rebased});
-        
-    }
-    // MP Pay
-    for (const iterator of jsonDataMpPay) {
-            let startingValue = jsonDataMpPay[0].pay 
-            let rebased = (100 / startingValue) * iterator.pay
-            mpPayData.push({x: iterator.date, y: rebased});
-    }
+    let jnrPay = PayPerYear(jsonDataJnrDoctorPay, doctorSelector, hoursWorked, nrocStatus, antisocialHours2016, antisocialHours2002, weekendsWorked, banding)
     
 
-    // Average Weekly Earnings
-    for (const iterator of jsonDataAveragePay) {
-        let adjusted = iterator.pay * 52.1429
-        let startingValue = jsonDataAveragePay[0].pay * 52.1429
-        let rebased = (100 / startingValue) * adjusted
-        averagePayData.push({x: iterator.date, y: Math.round(rebased)});
+    // MP Pay
+    for (const iterator of jsonDataMpPay) {
+            mpPayData.push({Date: iterator.date, Value: iterator.pay});
     }
 
     return {
         'rpi': rpiData,
         'cpih': cpihData,
-        'jnrDocPay': jnrDocPayData,
-        'mpPay' : mpPayData,
-        'avgYearlyEarnings': averagePayData
+        'jnrDocPay': jnrPay,
+        'mpPay' : mpPayData
     }
 }
-
-
-// Charts.js setup
-// Labels
-const labels = [
-];
-
-// Datasets
-const data = {
-    labels: labels,
-    datasets: [{
-        label: 'RPI Index',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
-        data: [],
-    }, 
-    {
-        label: 'CPIH Index',
-        backgroundColor: '9BD0F5',
-        borderColor: '9BD0F5',
-        data: [],
-    }, 
-    {
-        label: 'Junior Doctor Pay',
-        backgroundColor: '08a441',
-        borderColor: '08a441',
-        data: [],
-    },
-    {
-        label: 'MP Pay',
-        backgroundColor: '8719E2',
-        borderColor: '8719E2',
-        data: [],
-    },
-    {
-        label: 'Average Yearly Earnings',
-        backgroundColor: '42f545',
-        borderColor: '42f545',
-        data: [],
+function UpdatePayTable(data, year) {
+    let dateIndex = year - 2008
+    let header = document.getElementById('pay-header')
+    let table = document.getElementById('pay-table')
+    let numberOfRows = table.rows.length
+    console.log(data.jnrDocPay[dateIndex])
+    let listOfRows = Object.keys(data.jnrDocPay[dateIndex].Pay[0]).reverse()
+    
+    for (let i = 1; i <= numberOfRows; i++) {
+        if (i < numberOfRows) {
+        table.deleteRow(1)
+        }
     }
-]
-};
-// Config
-const config = {
-    type: 'line',
-    data, 
-    options: {
-        maintainAspectRatio: false,
-        responsive: true
+ 
+    for (const iterator of listOfRows) {
+        let row = table.insertRow(1)
+        let firstCell = row.insertCell(0)
+        let secondCell = row.insertCell(1)
+        firstCell.textContent = iterator
+        secondCell.textContent = `${data.jnrDocPay[dateIndex].Pay[0][iterator].toLocaleString('en-UK')}`
     }
-};
-
-// Render
-const myChart = new Chart(
-    document.getElementById('payChart'),
-    config
-);
-
-// Update Chart Function
-function graphUpdate(chart, parsedData) {
-    let index = 0 
-    let dataOptions = ['rpi', 'cpih', 'jnrDocPay', 'mpPay', 'avgYearlyEarnings']
-    chart.data.datasets.forEach(dataset => {
-        dataset.data = parsedData[dataOptions[index]]
-        index ++
-        console.log(parsedData[dataOptions[index]])
-        
-    });
-    chart.options.maintainAspectRatio = false;
-    chart.options.response = true;
-    chart.update();
+    header.innerText = `Pay Data ${year}`
 }
-
 
 
 

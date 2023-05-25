@@ -40,14 +40,17 @@
           <div class="subheading mb-5">
               Showcasing UK Doctor's pay cuts since 2008 
           </div>
-          <div class="container">
+          <div class="container-flex">
             <div class="row d-flex">
-            <div class='col-md-8'>
-              <div class="chart-container" style="position: relative; height:0vh; width:0vw"></div>
-                <canvas id="payChart"></canvas>
-              </div>
-              <div class="col-lg-4">
+            <!--Pay Input-->
+            <div class='col-md-6'>
+              <div class="align-self-start">
                 <form id="doctor-grade-form">
+                <h3>Year</h3>
+                <div class="input-group mb-3">
+                  <input id="year" type="number" class="form-control" aria-label="Hours Worked Outside 07:00 - 21:00" value="2022" min="2008", max="2022" aria-describedby="inputGroup-sizing-sm">
+                  <span class="input-group-text">07:00 - 21:00</span>
+                </div>
                 <h3>Grade</h1>
                 <select class="form-select", name="grade", id="grade">
                   <option>FY1</option>
@@ -60,20 +63,20 @@
                   <option>ST6</option>
                   <option>ST7</option>
                   <option>ST8</option>
-
                 </select>
+                
                 <h3 class="mt-4">Hours Worked</h1>
                 <div class="input-group mb-3">
-                  <input id="hours-worked" type="number" class="form-control" placeholder="Average Weekly Hours" aria-label="Average Weekly Hours" aria-describedby="inputGroup-sizing" value="44">
+                  <input id="hours-worked" type="number" class="form-control" placeholder="Average Weekly Hours" aria-label="Average Weekly Hours" aria-describedby="inputGroup-sizing" min="20" max="48" maxlength="2" required value="44">
                   <span class="input-group-text">Average Weekly Hours</span>
                 </div>
                 <h3 class="mt-4">Antisocial Hours</h1>
                 <div class="input-group mb-3">
-                  <input id="antisocial-hours-worked-2016" type="number" class="form-control" aria-label="Hours Worked Outside 07:00 - 21:00" value="12" aria-describedby="inputGroup-sizing-sm">
+                  <input id="antisocial-hours-worked-2016" type="number" class="form-control" aria-label="Hours Worked Outside 07:00 - 21:00" min="0" max="48" maxlength="2" required value="12" aria-describedby="inputGroup-sizing-sm">
                   <span class="input-group-text">07:00 - 21:00</span>
                 </div>
                 <div class="input-group mb-3">
-                  <input id="antisocial-hours-worked-2002" type="number" class="form-control" aria-label="Hours Worked Outside M-F 07:00 - 19:00" value="16" aria-describedby="inputGroup-sizing-sm">
+                  <input id="antisocial-hours-worked-2002" type="number" class="form-control" aria-label="Hours Worked Outside M-F 07:00 - 19:00" min="0" max="48" maxlength="2" required value="16" aria-describedby="inputGroup-sizing-sm">
                   <span class="input-group-text">M-F 07:00 - 19:00</span>
                 </div>
                 <label class="form-check-label" for="weekends-worked">Weekends Worked</label>
@@ -103,9 +106,48 @@
                 </div>
                 <button type="button" class="btn btn-primary mt-2" id="submit-button">Submit</button>
               </form>
-              
              </div>
+             
           </div>
+          <!--Pay Table-->
+          <div class="col-md-6 ps-3">
+              <h3 id="pay-header">Pay Data</h3>
+                <table id="pay-table" class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Category</th>
+                      <th scope="col">Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Total Pay</td>
+                      <td id="total-pay">--</td>
+
+                    </tr>
+                    <tr>
+                      <td>Base Pay</td>
+                      <td id="base-pay">--</td>
+                    </tr>
+                    <tr>
+                      <td>Antisocial Hours</td>
+                      <td id="antisocial-hours">--</td>
+                    </tr>
+                    <tr>
+                      <td>Additional Hours</td>
+                      <td id="additional-hours">--</td>
+                    </tr>
+                    <tr>
+                      <td>Weekend Pay</td>
+                      <td id="weekend-pay">--</td>
+                    </tr>
+                    <tr>
+                      <td>NROC Pay</td>
+                      <td id="nroc-pay">--</td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
         </div>
           
   </section>
