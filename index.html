@@ -4,9 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
      <!-- Font Awesome icons (free version)-->
-     <script src="https://kit.fontawesome.com/6e6c5c30a1.js" crossorigin="anonymous"></script>
-     
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/6e6c5c30a1.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="styles/style.css" /> 
     <title>Pay Cut Calculator</title>
@@ -30,24 +28,90 @@
   
 <!--Page Content-->
 <div class="container-fluid p-0">
-  <!-- About-->
-  <section class="resume-section" id="graph">
+  <!-- Description-->
+  <section class="resume-section">
       <div class="resume-section-content">
-          <h1 class="mb-0">
+          <h1 class="mb-0 mt-1">
               Doctor's Pay Cut
               <span class="text-primary">Calculator</span>
           </h1>
-          <div class="subheading mb-5">
-              Showcasing UK Doctor's pay cuts since 2008 
+          <div class="subheading mb-3">
+              Showcasing the decline in UK Doctor's pay 
           </div>
-          <div class="container">
-            <div class="row d-flex">
-            <div class='col-md-8'>
-              <div class="chart-container" style="position: relative; height:0vh; width:0vw"></div>
-                <canvas id="payChart"></canvas>
+          <div class="container-flex">
+            <!--First Content Row-->
+            <div class="row d-flex mb-5">
+              <div class="col-lg-6">
+                <p>
+                  Doctors have suffered a substantial pay cut since 2008 as the pay awarded by the Doctors & Dentist 
+                  pay review board 
+                  <a href="https://www.gov.uk/government/organisations/review-body-on-doctors-and-dentists-remuneration" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"> (DDPRB)</a> 
+                  has failed to keep up with inflation as measured using both 
+                  <a href="https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/chaw/mm23" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"> RPI </a> and 
+                  <a href="https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/l522/mm23" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"> CPIH </a>. 
+                  This is in contrast to pay in the wider economy as a whole. For postgraduate doctors in training based in England historical pay comparisons are made more difficult due to the replacement of the  
+                  <a href="https://www.nhsemployers.org/articles/old-terms-and-conditions-service-medical-and-dental-staff" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">2002</a> 
+                  junior doctor contract with the 
+                  <a href="https://www.nhsemployers.org/publications/doctors-and-dentists-training-terms-and-conditions-england-2016" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">2016</a> 
+                 contract which altered how pay is calculated. There was a reduction in the reliance on 
+                 <a href="https://www.bma.org.uk/pay-and-contracts/pay/pay-banding/how-pay-banding-works" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">banding </a>
+                  and comparative increase in basic pay which can make direct comparisons between basic pay between the two misleading.  
+                </p> 
               </div>
-              <div class="col-lg-4">
+              <div class="col-lg-6">
+                <p>
+                  Two solutions to this problem are avaliable. The first is to base comparisons off the data collected by NHS Digital's 
+                  <a href="https://digital.nhs.uk/data-and-information/publications/statistical/nhs-staff-earnings-estimates" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Staff Earnings Estimates</a>. 
+                  This takes into account the extent to which banding was making up a significant proportion of 'junior' doctor's pay prior to the 2016 contract. These comparisons can be found <a href="#nhs-digital-comp" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">here</a>. </p>
+                  <p> The second is to make comparisons that account for the banding used in 2002 contract which made up a large proportion total pay prior to the introduction of the 2016 contract.
+                  These comparisons can be found <a href="#band-calc" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">here</a>. 
+                </p>
+                </p>
+              </div>
+            </div>
+              <!--Second Content Row-->
+              <div class="row d-flex mt-5" id="nhs-digital-comp">
+                <h2 class="mb-3">Comparisons using NHS Digital's Staff Earnings</h2>
+                <h3 class="">Change since 2008 (Rebased) </h3>
+                <div class='col-lg-8'>
+                  <div class="chart-container" style="position: relative; height:0vh; width:0vw"></div>
+                      <canvas id="payChart"></canvas>
+                  </div>
+                  <div class='col-lg-2'>
+                    <h4>Chart Options</h4>
+                    <select class="form-select", name="grade", id="graph-grade">
+                      <option>FY1</option>
+                      <option>FY2</option>
+                      <option>Specialty Registrar</option>
+                      <option>Staff Grade</option>
+                      <option>Associate Specialist</option>
+                      <option>Consultant</option>
+                    </select>
+                    <p class="mt-2">The </p>
+                  </div>
+              </div>
+              <!--Third Content Row-->
+              <div class="row d-flex mt-5">
+                <h3 class="">Change since 2008 (Cash Terms) </h3>
+                <div class='col-lg-8'>
+                  <div class="chart-container" style="position: relative; height:0vh; width:0vw"></div>
+                      <canvas id="payChart-cash"></canvas>
+                  </div>
+                  <div class='col-lg-2'>
+                  </div>
+              </div>
+
+        <!--Fourth Content Row-->
+          <div class="row d-flex mt-5" id="band-calc">
+            <!--Pay Input-->
+            <div class='col-lg-6'>
+              <div class="align-self-start">
                 <form id="doctor-grade-form">
+                <h3>Year</h3>
+                <div class="input-group mb-3">
+                  <input id="year" type="number" class="form-control" aria-label="year" value="2022" min="2008", max="2022" aria-describedby="inputGroup-sizing-sm">
+                  <span class="input-group-text">Year</span>
+                </div>
                 <h3>Grade</h1>
                 <select class="form-select", name="grade", id="grade">
                   <option>FY1</option>
@@ -60,22 +124,23 @@
                   <option>ST6</option>
                   <option>ST7</option>
                   <option>ST8</option>
-                  <option>Consultant</option>
-
                 </select>
+                
                 <h3 class="mt-4">Hours Worked</h1>
                 <div class="input-group mb-3">
-                  <input id="hours-worked" type="number" class="form-control" placeholder="Average Weekly Hours" aria-label="Average Weekly Hours" aria-describedby="inputGroup-sizing" value="44">
+                  <input id="hours-worked" type="number" class="form-control" placeholder="Average Weekly Hours" aria-label="Average Weekly Hours" aria-describedby="inputGroup-sizing" min="20" max="48" maxlength="2" required value="44">
                   <span class="input-group-text">Average Weekly Hours</span>
                 </div>
                 <h3 class="mt-4">Antisocial Hours</h1>
                 <div class="input-group mb-3">
-                  <input id="antisocial-hours-worked-2016" type="number" class="form-control" aria-label="Hours Worked Outside 07:00 - 21:00" value="12" aria-describedby="inputGroup-sizing-sm">
+                  <input id="antisocial-hours-worked-2016" type="number" class="form-control" aria-label="Hours Worked Outside 07:00 - 21:00" min="0" max="48" maxlength="2" required value="12" aria-describedby="inputGroup-sizing-sm">
                   <span class="input-group-text">07:00 - 21:00</span>
+                  <p>For the 2016 Junior Doctor contract hours worked outside of 07:00 - 21:00 are classed as antisocial.</p>
                 </div>
                 <div class="input-group mb-3">
-                  <input id="antisocial-hours-worked-2002" type="number" class="form-control" aria-label="Hours Worked Outside M-F 07:00 - 19:00" value="16" aria-describedby="inputGroup-sizing-sm">
+                  <input id="antisocial-hours-worked-2002" type="number" class="form-control" aria-label="Hours Worked Outside M-F 07:00 - 19:00" min="0" max="48" maxlength="2" required value="16" aria-describedby="inputGroup-sizing-sm">
                   <span class="input-group-text">M-F 07:00 - 19:00</span>
+                  <p>For the 2002 Junior Doctor contract hours worked outside of Monday - Friday 07:00 - 19:00 are classed as antisocial.</p>
                 </div>
                 <label class="form-check-label" for="weekends-worked">Weekends Worked</label>
                 <select class="form-select", name="weekends-worked", id="weekends-worked">
@@ -102,12 +167,54 @@
                     <option>Unbanded</option>
                   </select>
                 </div>
-                <button type="button" class="btn btn-primary mt-2" id="submit-button">Submit</button>
               </form>
-              
              </div>
+           </div>
+           <!--Pay Table-->
+          <div class="col-lg-6 ps-3">
+            <h3 id="pay-header">Pay Data</h3>
+            <div class="col-lg-2">
+              
+            </div>
+              <table id="pay-table" class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Total Pay</td>
+                    <td id="total-pay">--</td>
+
+                  </tr>
+                  <tr>
+                    <td>Base Pay</td>
+                    <td id="base-pay">--</td>
+                  </tr>
+                  <tr>
+                    <td>Antisocial Hours</td>
+                    <td id="antisocial-hours">--</td>
+                  </tr>
+                  <tr>
+                    <td>Additional Hours</td>
+                    <td id="additional-hours">--</td>
+                  </tr>
+                  <tr>
+                    <td>Weekend Pay</td>
+                    <td id="weekend-pay">--</td>
+                  </tr>
+                  <tr>
+                    <td>NROC Pay</td>
+                    <td id="nroc-pay">--</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
           </div>
         </div>
+          </div>
           
   </section>
   <hr class="m-0" />
@@ -116,7 +223,7 @@
 <!--Scripts-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="javascript/jsDoctorContract.js" type="module"></script>
+<script src="javascript/graph.js" type="module"></script>
 <script src="javascript/jsScript.js" type="module"></script>
 </body>
 </html>

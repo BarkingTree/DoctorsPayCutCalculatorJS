@@ -16,7 +16,6 @@ function CalculateDoctorPay(year, basePay, grade, hoursWorked, nroc, antisocial2
         weekAllowance = [0, 3, 4, 4, 6, 7.5, 7.5, 10]
         }
     
-    
     // LTFT Check
     if (hoursWorked < 40) {
         ltft = true
@@ -52,18 +51,18 @@ function CalculateDoctorPay(year, basePay, grade, hoursWorked, nroc, antisocial2
             default: 
                 weekendMultiplier = weekAllowance[0]
         }
-        if (nroc = true) {
+        if (nroc == true) {
             nrocPay = (nrocMultiplier * basePay) * percentageWorked
         }
         else {
             nrocPay = 0
         }
         
-        let antisocialPay = basePay * (antisocial2016 * antiocialEnhancementPerHour) 
-        let weekendPay = (basePay * (weekendMultiplier / 100 )) * percentageWorked    
-        let totalPayRaw = ltftPay + antisocialPay + weekendPay + nrocPay + ltftAllowance
-        let totalPayRounded = Math.round(totalPayRaw)
-        resultsArray = [{totalPay: totalPayRounded, basePay: basePay, antisocialHours: antisocialPay, weekendPay: weekendPay, nrocPay: nrocPay, ltftAllowance: ltftAllowance}]
+        let antisocialPay = Math.round(basePay * (antisocial2016 * antiocialEnhancementPerHour))
+        let weekendPay = Math.round((basePay * (weekendMultiplier / 100 )) * percentageWorked)
+        let totalPay = Math.round(ltftPay + antisocialPay + weekendPay + nrocPay + ltftAllowance)
+
+        resultsArray = [{'Total Pay': totalPay, 'Base Pay': basePay, 'Antisocial Hour': antisocialPay, 'Weekend Pay': weekendPay, 'NROC Pay': nrocPay, 'LTFT Allowance': ltftAllowance}]
         return resultsArray
     }
 
@@ -97,18 +96,17 @@ function CalculateDoctorPay(year, basePay, grade, hoursWorked, nroc, antisocial2
             weekendMultiplier = weekAllowance[7]
         }
         
-        if (nroc = true) {
-            nrocPay = nrocMultiplier * basePay
+        if (nroc == true) {
+            nrocPay = Math.round(nrocMultiplier * basePay)
         }
         else {
             nrocPay = 0
         }
-        let antisocialPay = basePay * (antisocial2016 * antiocialEnhancementPerHour) 
-        let additionalHoursPay = basePay * ((hoursWorked - 40) * additionalHourEnhancement)
-        let weekendPay = basePay * (weekendMultiplier / 100)
-        let totalPayRaw = basePay + additionalHoursPay + antisocialPay + weekendPay + nrocPay
-        let totalPayRounded = Math.round(totalPayRaw)
-        let resultsArray = [{totalPay: totalPayRounded, basePay: basePay, antisocialHours: antisocialPay, additionalHours: additionalHoursPay, weekendPay: weekendPay, nrocPay: nrocPay}]
+        let antisocialPay = Math.round(basePay * (antisocial2016 * antiocialEnhancementPerHour))
+        let additionalHoursPay = Math.round(basePay * ((hoursWorked - 40) * additionalHourEnhancement))
+        let weekendPay = Math.round(basePay * (weekendMultiplier / 100))
+        let totalPay = Math.round(basePay + additionalHoursPay + antisocialPay + weekendPay + nrocPay)
+        let resultsArray = [{'Total Pay': totalPay, 'Base Pay': basePay, 'Antisocial Hours': antisocialPay, 'Additional Hours': additionalHoursPay, 'Weekend Pay': weekendPay, 'NROC Pay': nrocPay}]
         return resultsArray
         }
     }
@@ -214,10 +212,9 @@ function CalculateDoctorPay(year, basePay, grade, hoursWorked, nroc, antisocial2
                 bandingString = 'Unbanded'
             }
         }
-        let bandedBasePay = basePay * baseSalaryBanding
-        let totalPayRaw = bandedBasePay * banding
-        let totalPayRounded = Math.round(totalPayRaw)
-        resultsArray = [{totalPay: totalPayRounded, basePay: Math.round(bandedBasePay), banding: banding, bandingDescription: bandingString}]
+        let bandedBasePay = Math.round(basePay * baseSalaryBanding)
+        let totalPay = Math.round(bandedBasePay * banding)
+        resultsArray = [{'TotalPay': totalPay, 'Base Pay': Math.round(basePay), 'Banding': banding, 'Banding Description': bandingString}]
         return resultsArray
 
     }
@@ -282,9 +279,9 @@ function CalculateDoctorPay(year, basePay, grade, hoursWorked, nroc, antisocial2
             }
         }
 
-        let totalPayRaw = basePay * banding
+        let totalPayRaw = Math.round(basePay * banding)
         let totalPayRounded = Math.round(totalPayRaw)
-        resultsArray = [{totalPay: totalPayRounded, basePay: Math.round(basePay), banding: banding, bandingDescription: bandingString}]
+        resultsArray = [{'Total Pay': totalPayRounded, 'Base Pay': Math.round(basePay), 'Banding': banding, 'Banding Description': bandingString}]
     return resultsArray
     }
 }
