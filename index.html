@@ -7,79 +7,76 @@
     <script src="https://kit.fontawesome.com/6e6c5c30a1.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="styles/style.css" /> 
-    <title>Pay Cut Calculator</title>
+    <title>Doctor's Pay Cut Calculator</title>
 </head>
 
 <body id="page-top">
-  <!-- Navigation. SideNav on Large. TopNav on small -->
+<!-- Navigation. SideNav on Large. TopNav on small -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="sideNav">
     <a class="navbar-brand" href="#page-top">
-        <span class="d-block d-lg-none navbar-brand">Pay Cut Calculator</span>
+        <span class="d-block d-lg-none navbar-brand">Doctor's Pay Cut Calculator</span>
     </a>
-    <ul class="navbar-nav d-block d-lg-none">
-        <li class="dev-icons"><a class="nav-link" href="#"><i class="bi bi-house"></i></a></li>
-    </ul>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav">
-            <li class="dev-icons"><a class="nav-link" href="#"><i class="bi bi-house"></i></a></li>
+          <li class="nav-item"><a class="nav-link" href="#introduction">Introduction</a></li>
+          <li class="nav-item"><a class="nav-link" href="#NHS-digital">NHS Digital Data</a></li>
+          <li class="nav-item"><a class="nav-link" href="#band-calc">Pay Calculator</a></li>
         </ul>
     </div>  
 </nav>
   
 <!--Page Content-->
 <div class="container-fluid p-0">
-  <!-- Description-->
-  <section class="resume-section">
-      <div class="resume-section-content">
-          <h1 class="mb-0 mt-1">
-              Doctor's Pay Cut
-              <span class="text-primary">Calculator</span>
-          </h1>
-          <div class="subheading mb-3">
-              Showcasing the decline in UK Doctor's pay 
-          </div>
-          <div class="container-flex">
-            <!--First Content Row-->
-            <div class="row d-flex mb-5">
-              <div class="col-lg-6">
-                <p>
-                  Doctors have suffered a substantial pay cut since 2008 as the pay awarded by the Doctors & Dentist 
-                  pay review board 
-                  <a href="https://www.gov.uk/government/organisations/review-body-on-doctors-and-dentists-remuneration" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"> (DDPRB)</a> 
-                  has failed to keep up with inflation as measured using both 
-                  <a href="https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/chaw/mm23" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"> RPI </a> and 
-                  <a href="https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/l522/mm23" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"> CPIH </a>. 
-                  This is in contrast to pay in the wider economy as a whole. For postgraduate doctors in training based in England historical pay comparisons are made more difficult due to the replacement of the  
-                  <a href="https://www.nhsemployers.org/articles/old-terms-and-conditions-service-medical-and-dental-staff" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">2002</a> 
-                  junior doctor contract with the 
-                  <a href="https://www.nhsemployers.org/publications/doctors-and-dentists-training-terms-and-conditions-england-2016" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">2016</a> 
-                 contract which altered how pay is calculated. There was a reduction in the reliance on 
-                 <a href="https://www.bma.org.uk/pay-and-contracts/pay/pay-banding/how-pay-banding-works" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">banding </a>
-                  and comparative increase in basic pay which can make direct comparisons between basic pay between the two misleading.  
-                </p> 
-              </div>
-              <div class="col-lg-6">
-                <p>
-                  Two solutions to this problem are avaliable. The first is to base comparisons off the data collected by NHS Digital's 
-                  <a href="https://digital.nhs.uk/data-and-information/publications/statistical/nhs-staff-earnings-estimates" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Staff Earnings Estimates</a>. 
-                  This takes into account the extent to which banding was making up a significant proportion of 'junior' doctor's pay prior to the 2016 contract. These comparisons can be found <a href="#nhs-digital-comp" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">here</a>. </p>
-                  <p> The second is to make comparisons that account for the banding used in 2002 contract which made up a large proportion total pay prior to the introduction of the 2016 contract.
-                  These comparisons can be found <a href="#band-calc" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">here</a>. 
-                </p>
-                </p>
-              </div>
-            </div>
-              <!--Second Content Row-->
-              <div class="row d-flex mt-5" id="nhs-digital-comp">
-                <h2 class="mb-3">Comparisons using NHS Digital's Staff Earnings</h2>
-                <h3 class="">Change since 2008 (Rebased) </h3>
-                <div class='col-lg-8'>
-                  <div class="chart-container" style="position: relative; height:0vh; width:0vw"></div>
-                      <canvas id="payChart"></canvas>
-                  </div>
-                  <div class='col-lg-2'>
-                    <h4>Chart Options</h4>
-                    <select class="form-select", name="grade", id="graph-grade">
+  <!-- Introduction -->
+  <!-- d-none d-lg-block to hide on > lg screen -->
+  <section id= "introduction" class="content">
+    <div class="row d-flex"> 
+      <h1 class="mb-0 mt-1 d-none d-lg-block">
+        Doctor's Pay Cut 
+        <span class="text-primary ">Calculator</span>
+    </h1>
+      <div class="subheading mb-4 d-none d-lg-block">
+        Showcasing the decline in Doctor's pay in England 🏴󠁧󠁢󠁥󠁮󠁧󠁿
+      </div>
+      <p class="mt-3">
+        Doctors of all grades have suffered a substantial pay cut since 2008 as the pay awarded by the Doctors & Dentist 
+        pay review board 
+        <a href="https://www.gov.uk/government/organisations/review-body-on-doctors-and-dentists-remuneration" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"> (DDPRB)</a> 
+        has failed to keep up with inflation as measured using both 
+        <a href="https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/chaw/mm23" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"> RPI </a> and 
+        <a href="https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/l522/mm23" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"> CPIH</a>. 
+        This is in contrast to pay in the wider economy as a whole. 
+        
+        However, for postgraduate doctors in training based in England pay comparisons are difficult due to the replacement of the  
+        <a href="https://www.nhsemployers.org/articles/old-terms-and-conditions-service-medical-and-dental-staff" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">2002</a> 
+        junior doctor contract with the 
+        <a href="https://www.nhsemployers.org/publications/doctors-and-dentists-training-terms-and-conditions-england-2016" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">2016</a> 
+       contract which altered how pay is calculated. This contract reduced the reliance on 
+       <a href="https://www.bma.org.uk/pay-and-contracts/pay/pay-banding/how-pay-banding-works" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">banding </a>
+         by substantially increasing basic pay. This makes direct comparisons between basic pay across the years and between the two contracts misleading.  
+      </p> 
+      <p>
+        Two solutions to this problem are avaliable. The first is to base comparisons off the data collected by NHS Digital's 
+        <a href="https://digital.nhs.uk/data-and-information/publications/statistical/nhs-staff-earnings-estimates" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Staff Earnings Estimates</a>. 
+        This takes into account the extent to which banding was making up a significant proportion of 'junior' doctor's pay prior to the 2016 contract. These comparisons can be found <a href="#nhs-digital-comp" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">here</a>. </p>
+        <p> The second is to make comparisons that account for the banding used in 2002 contract which made up a large proportion total pay prior to the introduction of the 2016 contract.
+        These comparisons can be found <a href="#band-calc" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">here</a>. 
+       </p>
+    </div>
+             
+            </section>
+            <hr class="mb-0" />
+
+            <!--NHS Digital Staff Earnings-->
+            <section id= "NHS-digital" class="content">
+              <div class="row d-flex mt-5 " id="nhs-digital-comp">
+                <div class="col-lg d-block">
+                  <h2 class="mb-3">Comparisons using NHS Digital's Staff Earnings</h2>
+                  <div class="col-3">
+                  <div class="container-flex">
+                    <h3>Grade</h3>
+                    <select class="form-select", name="grade", id="graph-grade">§
                       <option>FY1</option>
                       <option>FY2</option>
                       <option>Specialty Registrar</option>
@@ -87,23 +84,47 @@
                       <option>Associate Specialist</option>
                       <option>Consultant</option>
                     </select>
-                    <p class="mt-2">The </p>
                   </div>
-              </div>
-              <!--Third Content Row-->
-              <div class="row d-flex mt-5">
-                <h3 class="">Change since 2008 (Cash Terms) </h3>
-                <div class='col-lg-8'>
+                  </div>
+                </div>
+              
+                <div class="row my-2 align-items-center">
+                  
+                  
+                </div>
+                </div>
+                <div class="row d-flex">
+                <div class='col-lg-6'>
+                  <h5 id="graph-title" class="text-left mt-5">Change in FY1 Doctor's Earnings since 2008 (Rebased) </h5>
                   <div class="chart-container" style="position: relative; height:0vh; width:0vw"></div>
-                      <canvas id="payChart-cash"></canvas>
+                      <canvas id="payChart"></canvas>
+                      <small> Source: NHS Digital Staff Earnings Estimates (December 2022, October - December 2009. October - December 2008). ONS RPI & CPIH Index. ONS AWE: Whole Economy Level (£): Seasonally Adjusted Total Pay Excluding Arrears. IPSA MPs Pay.</small>
+                  </div>
+                  <div class='col-lg-6'>
+                    <h5 id="graph-title-cash" class="text-left mt-5">Change in FY1 Doctor's Earnings since 2008 (Cash Terms) </h5>
+                    <div class="chart-container" style="position: relative; height:0vh; width:0vw"></div>
+                        <canvas id="payChart-cash"></canvas>
+                        <small> Source: NHS Digital Staff Earnings Estimates (December 2022, October - December 2009. October - December 2008). ONS RPI & CPIH Index. ONS AWE: Whole Economy Level (£): Seasonally Adjusted Total Pay Excluding Arrears. IPSA MPs Pay.</small>
+                    </div>
+                </div>
+       
+              </div>
+
+              <div class="row d-flex mt-5">
+                <div class='col-lg-8'>
+                 
                   </div>
                   <div class='col-lg-2'>
                   </div>
               </div>
-
-        <!--Fourth Content Row-->
+            </section>
+            </div>
+            <hr class="m-0" />
+            
+              <!--Pay Calculator-->
+          <section id= "calc" class="content">
           <div class="row d-flex mt-5" id="band-calc">
-            <!--Pay Input-->
+            <h2 class="text-left my-2">Pay Calculator</h2>
             <div class='col-lg-6'>
               <div class="align-self-start">
                 <form id="doctor-grade-form">
@@ -112,7 +133,7 @@
                   <input id="year" type="number" class="form-control" aria-label="year" value="2022" min="2008", max="2022" aria-describedby="inputGroup-sizing-sm">
                   <span class="input-group-text">Year</span>
                 </div>
-                <h3>Grade</h1>
+                <h3>Grade</h3>
                 <select class="form-select", name="grade", id="grade">
                   <option>FY1</option>
                   <option>FY2</option>
@@ -125,7 +146,7 @@
                   <option>ST7</option>
                   <option>ST8</option>
                 </select>
-                
+
                 <h3 class="mt-4">Hours Worked</h1>
                 <div class="input-group mb-3">
                   <input id="hours-worked" type="number" class="form-control" placeholder="Average Weekly Hours" aria-label="Average Weekly Hours" aria-describedby="inputGroup-sizing" min="20" max="48" maxlength="2" required value="44">
@@ -170,13 +191,93 @@
               </form>
              </div>
            </div>
-           <!--Pay Table-->
+           
+           
           <div class="col-lg-6 ps-3">
+             <!--Pay Table - Inflation-->
+             <h3 id="pay-header-inflation" class="mt-5">Pay Data Adjusted for Inflation</h3>
+             <table id="pay-table-inflation" class="table">
+               <thead>
+                 <tr>
+                   <th scope="col">Category</th>
+                   <th scope="col">Value</th>
+                   <th scope="col">Loss</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr>
+                   <td>Total Pay</td>
+                   <td id="total-pay">--</td>
+
+                 </tr>
+                 <tr>
+                   <td>Base Pay</td>
+                   <td id="base-pay">--</td>
+                 </tr>
+                 <tr>
+                   <td>Antisocial Hours</td>
+                   <td id="antisocial-hours">--</td>
+                 </tr>
+                 <tr>
+                   <td>Additional Hours</td>
+                   <td id="additional-hours">--</td>
+                 </tr>
+                 <tr>
+                   <td>Weekend Pay</td>
+                   <td id="weekend-pay">--</td>
+                 </tr>
+                 <tr>
+                   <td>NROC Pay</td>
+                   <td id="nroc-pay">--</td>
+                 </tr>
+               </tbody>
+             </table>
+
+             <!--Pay Table-->
             <h3 id="pay-header">Pay Data</h3>
             <div class="col-lg-2">
-              
             </div>
               <table id="pay-table" class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Total Pay</td>
+                    <td id="total-pay">--</td>
+
+                  </tr>
+                  <tr>
+                    <td>Base Pay</td>
+                    <td id="base-pay">--</td>
+                  </tr>
+                  <tr>
+                    <td>Antisocial Hours</td>
+                    <td id="antisocial-hours">--</td>
+                  </tr>
+                  <tr>
+                    <td>Additional Hours</td>
+                    <td id="additional-hours">--</td>
+                  </tr>
+                  <tr>
+                    <td>Weekend Pay</td>
+                    <td id="weekend-pay">--</td>
+                  </tr>
+                  <tr>
+                    <td>NROC Pay</td>
+                    <td id="nroc-pay">--</td>
+                  </tr>
+                </tbody>
+              </table>
+
+             
+
+              <h3 id= "pay-header-old" class="mt-5">Pay Data 2008</h3>
+              <!--Pay Table - Old-->
+              <table id="pay-table-old" class="table">
                 <thead>
                   <tr>
                     <th scope="col">Category</th>
@@ -214,8 +315,6 @@
           </div>
           </div>
         </div>
-          </div>
-          
   </section>
   <hr class="m-0" />
 </div>
@@ -225,5 +324,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="javascript/graph.js" type="module"></script>
 <script src="javascript/jsScript.js" type="module"></script>
+<script src="javascript/calculator.js" type="module"></script>
 </body>
 </html>

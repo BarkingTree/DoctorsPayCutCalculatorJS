@@ -1,10 +1,13 @@
 import { PayPerYear } from "./jsDoctorContract.js"
 
 let grade = 'FY1'
+
 document.getElementById('graph-grade').addEventListener("change", function() {
     grade = document.getElementById('graph-grade').value
     UpdateGraphGrade()
 })
+
+
 
 // On Initial Load Perform 
 document.addEventListener("DOMContentLoaded", function() {
@@ -16,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
     })
 
 function UpdateGraphGrade() {
+
     // Get Interactive Page Elements Values
 let doctorSelector = document.getElementById('graph-grade').value
 let hoursWorked = document.getElementById('hours-worked').value
@@ -25,12 +29,19 @@ let weekendsWorked = document.getElementById('weekends-worked').value
 let nrocPay = document.getElementById('nroc')
 let banding = document.getElementById('manual-banding').value
 
+let graphTitle = document.getElementById('graph-title')
+let graphTitleCash = document.getElementById('graph-title-cash')
+graphTitle.innerText = `Change in ${grade} Doctor's Earnings since 2008 (Rebased)`
+graphTitleCash.innerText = `Change in ${grade} Doctor's Earnings since 2008 (Cash Terms)`
+
+
     let nrocStatus = false
     if (nrocPay.checked == true) {
         nrocStatus = true
     }
 
     GenerateGraphData(grade, doctorSelector, hoursWorked, nrocStatus, antisocialHours2016, antisocialHours2002, weekendsWorked, banding).then(graphData => {
+        console.log(grade)
         GraphUpdate(myChart, graphData, false)
         GraphUpdate(myChartCash, graphData, true)
     })
@@ -62,8 +73,10 @@ async function GenerateGraphData(grade, doctorSelector, hoursWorked, nrocStatus,
     let averagePayDataCash = []
 
 
-    let jsonDataRpi = await fetchJSONURL("https://api.ons.gov.uk/timeseries/chaw/dataset/mm23/data")
-    let jsonDatacCpih = await fetchJSONURL("https://api.ons.gov.uk/timeseries/L522/dataset/mm23/data")
+    // let jsonDataRpi = await fetchJSONURL("https://api.ons.gov.uk/timeseries/chaw/dataset/mm23/data")
+    let jsonDataRpi = await fetchJSON('rpi')
+   // let jsonDatacCpih = await fetchJSONURL("https://api.ons.gov.uk/timeseries/L522/dataset/mm23/data")
+   let jsonDatacCpih = await fetchJSON('cpih')
     let jsonDataJnrDoctorPay = await fetchJSON('englandDoctorPay')
     let jsonDataJnrAvgDoctorPay = await fetchJSON('englandDoctorAveragePay')
     let jsonDataMpPay = await fetchJSON('mpPay')
@@ -72,28 +85,27 @@ async function GenerateGraphData(grade, doctorSelector, hoursWorked, nrocStatus,
     let adjustedPay = PayPerYear(jsonDataJnrDoctorPay, doctorSelector, hoursWorked, nrocStatus, antisocialHours2016, antisocialHours2002, weekendsWorked, banding)
 
     //RPI
-    let rpiYears = jsonDataRpi['years']
-    let indexAdjustmentRPI = 21
-
-    for (const iterator of rpiYears) {
-            let startingValue = rpiYears[indexAdjustmentRPI].value
+    
+        for (const iterator of jsonDataRpi) {
+            let startingValue = jsonDataRpi[0].value
             let rebased = (100 / startingValue) * iterator.value
             if (iterator.date > 2007) {
-                rpiData.push({x: iterator.date, y: rebased});
+                 rpiData.push({x: iterator.date, y: rebased})
             }
-        
+           
         }
 
-    // CPIH
-    let cpihYears = jsonDatacCpih['years']
-    let indexAdjustmentCPIH = 20
-    for (const iterator of cpihYears) {
-            let startingValue = cpihYears[indexAdjustmentCPIH].value
+         // CPIH
+        for (const iterator of jsonDatacCpih) {
+            let startingValue = jsonDatacCpih[0].value
             let rebased = (100 / startingValue) * iterator.value
             if (iterator.date > 2007) {
-            cpihData.push({x: iterator.date, y: rebased});
+                 cpihData.push({x: iterator.date, y: rebased})
             }
-        }   
+        }
+
+   
+        
     // Jnr Doc
     for (const iterator of adjustedPay) {
             let rebased = (100 / adjustedPay[0].Pay[0].totalPay) * iterator.Pay[0].totalPay
@@ -141,10 +153,8 @@ async function GenerateGraphData(grade, doctorSelector, hoursWorked, nrocStatus,
     return {
         'rpi': rpiData,
         'cpih': cpihData,
-        'mpPay' : mpPayData,
         'avgYearlyEarnings': averagePayData,
         'jnrDocAvgPay': jnrDocAvgPayData,
-        'mpPayCash' : mpPayDataCash,
         'avgYearlyEarningsCash': averagePayDataCash,
         'jnrDocAvgPayCash': jnrDocAvgPayDataCash
     }
@@ -172,19 +182,13 @@ const data = {
         data: [],
     }, 
     {
-        label: 'MP Pay',
-        backgroundColor: 'rgb(186, 103, 199)',
-        borderColor: 'rgb(186, 103, 199)',
-        data: [],
-    },
-    {
         label: 'Average Yearly Earnings [ONS]',
         backgroundColor: 'rgb(252, 202, 3)',
         borderColor: 'rgb(252, 202, 3)',
         data: [],
     },
     {
-        label: 'Doctor Average Pay',
+        label: 'Doctor Average Pay [NHS Digital]',
         backgroundColor: 'rgb(103, 191, 199)',
         borderColor: 'rgb(103, 191, 199)',
         data: [],
@@ -196,12 +200,7 @@ const data = {
 const dataCash = {
     labels: labels,
     datasets: [
-    {
-        label: 'MP Pay',
-        backgroundColor: 'rgb(186, 103, 199)',
-        borderColor: 'rgb(186, 103, 199)',
-        data: [],
-    },
+
     {
         label: 'Average Yearly Earnings [ONS]',
         backgroundColor: 'rgb(252, 202, 3)',
@@ -209,7 +208,7 @@ const dataCash = {
         data: [],
     },
     {
-        label: 'Doctor Average Pay',
+        label: 'Doctor Average Pay [NHS Digital]',
         backgroundColor: 'rgb(103, 191, 199)',
         borderColor: 'rgb(103, 191, 199)',
         data: [],
@@ -224,7 +223,7 @@ const config = {
     options: {
         maintainAspectRatio: true,
         resizeable: true,
-        aspectRatio: 2, 
+        aspectRatio: 1.8, 
             scales: {
              x: {
                grid: {
@@ -251,7 +250,7 @@ const config = {
     }
 };
 
-// Render Charts
+// Render rebased Charts
 const myChart = new Chart(
     document.getElementById('payChart'),
     config
@@ -263,7 +262,7 @@ const configCash = {
     options: {
         maintainAspectRatio: true,
         resizeable: true,
-        aspectRatio: 2, 
+        aspectRatio: 1.8, 
             scales: {
              x: {
                grid: {
@@ -290,7 +289,7 @@ const configCash = {
     }
 };
 
-// Render Chart
+// Render cash terms Chart
 const myChartCash = new Chart(
     document.getElementById('payChart-cash'),
     configCash
@@ -298,18 +297,18 @@ const myChartCash = new Chart(
 
 // Update Chart Function
 function GraphUpdate(chart, parsedData, cash) {
-    
+    console.log(parsedData, cash)
    
     let index = 0 
     if (cash == false) {
-    let dataOptions = ['rpi', 'cpih', 'mpPay', 'avgYearlyEarnings', 'jnrDocAvgPay']
+    let dataOptions = ['rpi', 'cpih', 'avgYearlyEarnings', 'jnrDocAvgPay']
     chart.data.datasets.forEach(dataset => {
         dataset.data = parsedData[dataOptions[index]]
         index ++    
         
     });
     } else if (cash == true) {
-    let dataOptions = ['mpPayCash', 'avgYearlyEarningsCash', 'jnrDocAvgPayCash']
+    let dataOptions = ['avgYearlyEarningsCash', 'jnrDocAvgPayCash']
     console.log(chart.data.datasets)
     chart.data.datasets.forEach(dataset => {
    
