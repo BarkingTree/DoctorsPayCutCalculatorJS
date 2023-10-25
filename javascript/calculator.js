@@ -43,7 +43,7 @@ let year = document.getElementById('year').value
     
 async function CreatePayData(doctorSelector, hoursWorked, nrocStatus, antisocialHours2016, antisocialHours2002, weekendsWorked, banding) {
     async function FetchJSON(name) {
-        let url = `../assets/data/${name}.json`;
+        let url = `./assets/data/${name}.json`;
         const response = await fetch(url)
         const jsonData = await response.json()
         return jsonData
