@@ -49,7 +49,7 @@ graphTitleCash.innerText = `Change in ${grade} Doctor's Earnings since 2008 (Cas
 
     
 async function fetchJSON(name) {
-    let url = `../assets/data/${name}.json`;
+    let url = `./assets/data/${name}.json`;
     const response = await fetch(url)
     const jsonData = await response.json()
     return jsonData
