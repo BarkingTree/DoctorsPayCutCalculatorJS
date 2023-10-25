@@ -26,8 +26,9 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 	.navbar-nav {
 		.nav-item {
 			.nav-link {
-				font-weight: 300;
+				font-weight: 800;
 				letter-spacing: 0.05rem;
+
 			}
 		}
 	}
@@ -81,7 +82,7 @@ body {
 		left: 0;
 		display: flex;
 		flex-direction: column;
-		width: 10rem;
+		width: 11rem;
 		height: 100vh;
 		.navbar-brand {
 			display: flex;
